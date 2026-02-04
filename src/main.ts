@@ -1,24 +1,71 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { Application } from 'pixi.js';
+import './style.css';
+import { ProgressiveFractal } from './ProgressiveFractal';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const app = new Application();
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+(async () => {
+    // Initialize the application
+    await app.init({ 
+        background: '#1099bb', 
+        resizeTo: window,
+        preference: 'webgl', // Force WebGL to ensure our GLShader works
+    });
+
+    // Append the application canvas to the document body
+    document.body.appendChild(app.canvas);
+
+    // Create the fractal renderer
+    const fractal = new ProgressiveFractal();
+    app.stage.addChild(fractal);
+
+    // Calculate size (smaller of width/height with padding)
+    const size = Math.min(app.screen.width, app.screen.height) * 0.8;
+    
+    // Center the container
+    // Fractal will be generated in 0..size space
+    fractal.x = (app.screen.width - size) / 2;
+    fractal.y = (app.screen.height - size) / 2;
+
+    // Create Generate button
+    const generateBtn = document.createElement('button');
+    generateBtn.innerText = "Generate";
+    generateBtn.style.position = 'absolute';
+    generateBtn.style.top = '50%';
+    generateBtn.style.left = '50%';
+    generateBtn.style.transform = 'translate(-50%, -50%)';
+    generateBtn.style.fontSize = '18pt';
+    generateBtn.style.padding = '10px 20px';
+    generateBtn.style.zIndex = '100';
+
+    generateBtn.onclick = () => {
+        fractal.generate(size, size);
+        generateBtn.style.display = 'none';
+        setTimeout(() => {
+            resetBtn.style.display = 'block';
+        }, 5000);
+    };
+
+    document.body.appendChild(generateBtn);
+
+    // Create Reset button
+    const resetBtn = document.createElement('button');
+    resetBtn.innerText = "Reset";
+    resetBtn.style.position = 'absolute';
+    resetBtn.style.top = '20px';
+    resetBtn.style.left = '50%';
+    resetBtn.style.transform = 'translateX(-50%)';
+    resetBtn.style.fontSize = '12pt';
+    resetBtn.style.padding = '10px 20px';
+    resetBtn.style.zIndex = '100';
+    resetBtn.style.display = 'none';
+
+    resetBtn.onclick = () => {
+        fractal.reset();
+        resetBtn.style.display = 'none';
+        generateBtn.style.display = 'block';
+    };
+
+    document.body.appendChild(resetBtn);
+
+})();
