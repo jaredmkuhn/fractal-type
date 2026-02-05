@@ -27,3 +27,6 @@ dist/
 .env
 .vscode/
 CLAUDE.md
+
+# Cache
+.eslintcache

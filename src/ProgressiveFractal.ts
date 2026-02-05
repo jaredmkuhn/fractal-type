@@ -1,6 +1,7 @@
 import { Mesh, Geometry, Buffer, Ticker, BufferUsage } from 'pixi.js';
-import { letterMaps } from './common/letterMaps';
+import { LETTER_MAPS } from './common/letterMaps';
 import { FractalShader } from './FractalShader';
+import type { AffineTransform2D } from './common/interfaces';
 
 export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
     private readonly MAX_POINTS = 1_000_000;
@@ -37,11 +38,11 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
 
         this.points = points;
         this.pointsBuffer = pointsBuffer;
-        
+
         // Start in valid unit square position
         this.currentX = Math.random();
         this.currentY = Math.random();
-        
+
         // Don't start automatically; wait for generate call
         Ticker.shared.add(this.update, this);
     }
@@ -51,7 +52,7 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
         this.isGenerating = true;
 
         // Scale transforms to the target size
-        const rawMaps = letterMaps['H'];
+        const rawMaps = LETTER_MAPS['H'];
         if (rawMaps) {
             this.scaledMaps = this.scaleTransforms(rawMaps, width, height);
         }
@@ -70,16 +71,16 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
         this.pointsBuffer.update();
     }
 
-    private scaledMaps: any[] = [];
+    private scaledMaps: AffineTransform2D[] = [];
 
-    private scaleTransforms(transforms: any[], width: number, height: number): any[] {
-        return transforms.map(t => ({
+    private scaleTransforms(transforms: AffineTransform2D[], width: number, height: number): AffineTransform2D[] {
+        return transforms.map((t) => ({
             s: { ...t.s },
             r: { ...t.r },
-            t: { 
-                x: t.t.x * width, 
-                y: t.t.y * height 
-            }
+            t: {
+                x: t.t.x * width,
+                y: t.t.y * height,
+            },
         }));
     }
 
@@ -88,17 +89,17 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
 
         const maps = this.scaledMaps;
         let pointsGenerated = 0;
-        
+
         const pts = this.points;
         let idx = this.currentPointIndex * 2;
-        
+
         while (pointsGenerated < this.POINTS_PER_FRAME && this.currentPointIndex < this.MAX_POINTS) {
             const tIndex = Math.floor(Math.random() * maps.length);
             const transform = maps[tIndex];
 
             // xt = x * transform.s.x + y * transform.r.y + transform.t.x
-            const nextX = (this.currentX * transform.s.x) + (this.currentY * transform.r.y) + transform.t.x;
-            const nextY = (this.currentX * transform.r.x) + (this.currentY * transform.s.y) + transform.t.y;
+            const nextX = this.currentX * transform.s.x + this.currentY * transform.r.y + transform.t.x;
+            const nextY = this.currentX * transform.r.x + this.currentY * transform.s.y + transform.t.y;
 
             this.currentX = nextX;
             this.currentY = nextY;
@@ -111,7 +112,7 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
         }
 
         this.pointsBuffer.update();
-        
+
         if (this.currentPointIndex >= this.MAX_POINTS) {
             this.isGenerating = false;
         }

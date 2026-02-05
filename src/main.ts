@@ -6,8 +6,8 @@ const app = new Application();
 
 (async () => {
     // Initialize the application
-    await app.init({ 
-        background: '#1099bb', 
+    await app.init({
+        background: '#1099bb',
         resizeTo: window,
         preference: 'webgl', // Force WebGL to ensure our GLShader works
     });
@@ -21,7 +21,7 @@ const app = new Application();
 
     // Calculate size (smaller of width/height with padding)
     const size = Math.min(app.screen.width, app.screen.height) * 0.8;
-    
+
     // Center the container
     // Fractal will be generated in 0..size space
     fractal.x = (app.screen.width - size) / 2;
@@ -29,7 +29,7 @@ const app = new Application();
 
     // Create Generate button
     const generateBtn = document.createElement('button');
-    generateBtn.innerText = "Generate";
+    generateBtn.innerText = 'Generate';
     generateBtn.style.position = 'absolute';
     generateBtn.style.top = '50%';
     generateBtn.style.left = '50%';
@@ -50,7 +50,7 @@ const app = new Application();
 
     // Create Reset button
     const resetBtn = document.createElement('button');
-    resetBtn.innerText = "Reset";
+    resetBtn.innerText = 'Reset';
     resetBtn.style.position = 'absolute';
     resetBtn.style.top = '20px';
     resetBtn.style.left = '50%';
@@ -67,5 +67,4 @@ const app = new Application();
     };
 
     document.body.appendChild(resetBtn);
-
 })();

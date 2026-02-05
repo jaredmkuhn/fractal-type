@@ -8,11 +8,11 @@ A modern, web-based port of a 2D fractal typesetting engine originally developed
 
 ## 1. Technical Stack
 
-* **Language:** TypeScript (Strict Mode)
-* **Build Tool:** Vite (Vanilla-TS template)
-* **Graphics Engine:** PixiJS (v8+)
-* **Rendering Method:** Custom Shader (GLSL) using `PIXI.DRAW_MODES.POINTS`
-* **Deployment:** AWS S3 + CloudFront (Static Site)
+- **Language:** TypeScript (Strict Mode)
+- **Build Tool:** Vite (Vanilla-TS template)
+- **Graphics Engine:** PixiJS (v8+)
+- **Rendering Method:** Custom Shader (GLSL) using `PIXI.DRAW_MODES.POINTS`
+- **Deployment:** AWS S3 + CloudFront (Static Site)
 
 ---
 
@@ -20,18 +20,18 @@ A modern, web-based port of a 2D fractal typesetting engine originally developed
 
 ### Coordinate System
 
-* **Logic Space:** Unit Square (0,0 to 1,1).
-* **Screen Space:** Dynamic (based on `window.innerWidth/Height`).
-* **Origin:** Bottom-Left (OpenGL Style). *Implementation requires a Y-flip: `screenY = CanvasHeight - (UnitY * Scale)`.*
+- **Logic Space:** Unit Square (0,0 to 1,1).
+- **Screen Space:** Dynamic (based on `window.innerWidth/Height`).
+- **Origin:** Bottom-Left (OpenGL Style). _Implementation requires a Y-flip: `screenY = CanvasHeight - (UnitY _ Scale)`.\*
 
 ### Class Structure
 
 1. **`FractalShader`**: Extends `PIXI.Shader`. Encapsulates GLSL code and handles uniforms (Point Size, Color, Alpha).
 2. **`ProgressiveFractal`**: The engine.
-* Holds a `Float32Array` buffer of 1M points.
-* Implements the "Chaos Game" logic.
-* Handles "Chunking": Uploading ~15,000 points per frame to the GPU to create a 2-3 second "drawing" animation.
 
+- Holds a `Float32Array` buffer of 1M points.
+- Implements the "Chaos Game" logic.
+- Handles "Chunking": Uploading ~15,000 points per frame to the GPU to create a 2-3 second "drawing" animation.
 
 3. **`AffineTransform` Interface**: Defines the 2D matrix constants `a, b, c, d, e, f`.
 
@@ -50,9 +50,9 @@ A modern, web-based port of a 2D fractal typesetting engine originally developed
 
 Implement three base transforms to map a unit square into an "H" shape:
 
-* **Left Bar:** `x' = 0.33x, y' = y`
-* **Middle Bar:** `x' = 0.34x + 0.33, y' = 0.34y + 0.33`
-* **Right Bar:** `x' = 0.33x + 0.67, y' = y`
+- **Left Bar:** `x' = 0.33x, y' = y`
+- **Middle Bar:** `x' = 0.34x + 0.33, y' = 0.34y + 0.33`
+- **Right Bar:** `x' = 0.33x + 0.67, y' = y`
 
 ### Milestone 3: Shader Extraction
 
@@ -97,12 +97,11 @@ Since you are using Windows 11, the most seamless way to handle authentication i
 
 1. **Install:** Open PowerShell as Admin and run: `winget install GitHub.cli`
 2. **Authenticate:** Run `gh auth login`
-3. **Follow Prompts:** * Select `GitHub.com`.
-* Select `HTTPS` as preferred protocol.
-* Select `Login with a web browser`.
-* A browser window will open; paste the one-time code provided in the terminal.
+3. **Follow Prompts:** \* Select `GitHub.com`.
 
-
+- Select `HTTPS` as preferred protocol.
+- Select `Login with a web browser`.
+- A browser window will open; paste the one-time code provided in the terminal.
 
 ### Option 2: Personal Access Token (Classic)
 
@@ -118,10 +117,10 @@ If you prefer standard Git prompts:
 
 1. **Build:** `npm run build` (generates the `dist` folder).
 2. **Sync:** ```powershell
-aws s3 sync dist/ s3://your-bucket-name --delete
-```
+   aws s3 sync dist/ s3://your-bucket-name --delete
 
 ```
 
+```
 
 3. **CDN:** Create a CloudFront Distribution pointing to your S3 bucket. Ensure **HTTPS** is enabled, as modern browsers may restrict WebGL/WebGPU features on unencrypted connections.

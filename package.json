@@ -1,19 +1,35 @@
 {
-  "name": "fractal-type",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@webgpu/types": "^0.1.69",
-    "typescript": "~5.9.3",
-    "vite": "^7.3.1"
-  },
-  "dependencies": {
-    "pixi.js": "^8.16.0"
-  }
+    "name": "fractal-type",
+    "private": true,
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+        "dev": "npm run lint && npm run test && vite",
+        "build": "npm run format && npm run lint && npm run test && tsc && vite build",
+        "preview": "vite preview",
+        "lint": "npm run format && eslint . --cache --ext .ts",
+        "lint:fix": "npm run format && eslint . --cache --ext .ts --fix",
+        "format": "prettier --cache --write .",
+        "test": "jest --config jest.config.ts"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.39.2",
+        "@types/jest": "^30.0.0",
+        "@typescript-eslint/eslint-plugin": "^8.54.0",
+        "@typescript-eslint/parser": "^8.54.0",
+        "eslint": "^9.39.2",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.5",
+        "globals": "^17.3.0",
+        "jest": "^30.2.0",
+        "prettier": "^3.8.1",
+        "ts-jest": "^29.4.6",
+        "typescript": "~5.9.3",
+        "typescript-eslint": "^8.54.0",
+        "vite": "^7.3.1"
+    },
+    "dependencies": {
+        "@webgpu/types": "^0.1.69",
+        "pixi.js": "^8.16.0"
+    }
 }
