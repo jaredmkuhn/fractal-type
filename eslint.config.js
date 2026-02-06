@@ -1,20 +1,26 @@
 import js from '@eslint/js';
 import globals from 'globals';
+import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import prettierRecommended from 'eslint-plugin-prettier/recommended';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
-export default tseslint.config(
+export default [
     { ignores: ['dist', 'node_modules', 'coverage'] },
     {
-        extends: [js.configs.recommended, ...tseslint.configs.recommended, prettierRecommended],
         files: ['**/*.{ts,tsx}'],
+        rules: {
+            'prettier/prettier': 'error',
+            '@typescript-eslint/no-explicit-any': 'error',
+        },
+    },
+    {
         languageOptions: {
             ecmaVersion: 2020,
             globals: globals.browser,
         },
-        rules: {
-            'prettier/prettier': 'error',
-            '@typescript-eslint/no-explicit-any': 'warn',
-        },
     },
-);
+    js.configs.recommended,
+    pluginJs.configs.recommended,
+    ...tseslint.configs.recommended,
+    eslintPluginPrettierRecommended,
+];

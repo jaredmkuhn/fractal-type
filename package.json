@@ -5,10 +5,10 @@
     "type": "module",
     "scripts": {
         "dev": "npm run lint && npm run test && vite",
-        "build": "npm run format && npm run lint && npm run test && tsc && vite build",
+        "build": "npm run lint && npm run test && tsc && vite build",
         "preview": "vite preview",
-        "lint": "npm run format && eslint . --cache --ext .ts",
-        "lint:fix": "npm run format && eslint . --cache --ext .ts --fix",
+        "lint": "eslint . --cache --ext .ts",
+        "lint:fix": "eslint . --cache --ext .ts --fix",
         "format": "prettier --cache --write .",
         "test": "jest --config jest.config.ts"
     },
