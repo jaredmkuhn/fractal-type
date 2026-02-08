@@ -1,5 +1,5 @@
 import { Mesh, Geometry, Buffer, Ticker, BufferUsage } from 'pixi.js';
-import { LETTER_MAPS } from './common/letterMaps';
+import { generateLetter } from './common/affineHelpers';
 import { FractalShader } from './FractalShader';
 import type { AffineTransform2D } from './common/interfaces';
 
@@ -52,7 +52,7 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
         this.isGenerating = true;
 
         // Scale transforms to the target size
-        const rawMaps = LETTER_MAPS['H'];
+        const rawMaps = generateLetter('H');
         if (rawMaps) {
             this.scaledMaps = this.scaleTransforms(rawMaps, width, height);
         }

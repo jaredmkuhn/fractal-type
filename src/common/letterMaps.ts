@@ -1,6 +1,6 @@
-import type { AffineTransform2D } from './interfaces';
+import type { BlockMap } from './interfaces';
 
-type CapitalLetters =
+export type CapitalLetters =
     | 'A'
     | 'B'
     | 'C'
@@ -28,22 +28,32 @@ type CapitalLetters =
     | 'Y'
     | 'Z';
 
-export const LETTER_MAPS: Partial<Record<CapitalLetters, AffineTransform2D[]>> = {
+export const START_MAP: BlockMap = {
+    ul: { x: 0, y: 0 },
+    ur: { x: 1, y: 0 },
+    ll: { x: 0, y: 1 },
+    lr: { x: 1, y: 1 },
+};
+
+export const BASE_MAPS: Partial<Record<CapitalLetters, BlockMap[]>> = {
     H: [
         {
-            s: { x: 0, y: 0 },
-            r: { x: -1, y: 0.33 },
-            t: { x: 0, y: 1 },
+            ul: { x: 0, y: 1 },
+            ur: { x: 0, y: 0 },
+            ll: { x: 0.33, y: 1 },
+            lr: { x: 0.33, y: 0 },
         },
         {
-            s: { x: 0.34, y: 0.34 },
-            r: { x: 0, y: 0 },
-            t: { x: 0.33, y: 0.33 },
+            ul: { x: 0.33, y: 0.33 },
+            ur: { x: 0.67, y: 0.33 },
+            ll: { x: 0.33, y: 0.67 },
+            lr: { x: 0.67, y: 0.67 },
         },
         {
-            s: { x: 0, y: 0 },
-            r: { x: -1, y: 0.33 },
-            t: { x: 0.67, y: 1 },
+            ul: { x: 0.67, y: 1 },
+            ur: { x: 0.67, y: 0 },
+            ll: { x: 1, y: 1 },
+            lr: { x: 1, y: 0 },
         },
-    ] as AffineTransform2D[],
+    ],
 };

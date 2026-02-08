@@ -8,3 +8,10 @@ export interface AffineTransform2D {
     r: IVector2D;
     t: IVector2D;
 }
+
+export interface BlockMap {
+    ul: IVector2D;
+    ur: IVector2D;
+    ll: IVector2D;
+    lr: IVector2D;
+}
