@@ -52,7 +52,7 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
         this.isGenerating = true;
 
         // Scale transforms to the target size
-        const rawMaps = generateLetter('E');
+        const rawMaps = generateLetter('H');
         if (rawMaps) {
             this.scaledMaps = this.scaleTransforms(rawMaps, width, height);
         }
@@ -76,7 +76,10 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
     private scaleTransforms(transforms: AffineTransform2D[], width: number, height: number): AffineTransform2D[] {
         return transforms.map((t) => ({
             s: { ...t.s },
-            r: { ...t.r },
+            r: {
+                x: t.r.x * (height / width),
+                y: t.r.y * (width / height),
+            },
             t: {
                 x: t.t.x * width,
                 y: t.t.y * height,

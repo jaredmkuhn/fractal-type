@@ -20,12 +20,13 @@ const app = new Application();
     app.stage.addChild(fractal);
 
     // Calculate size (smaller of width/height with padding)
-    const size = Math.min(app.screen.width, app.screen.height) * 0.8;
+    const width = app.screen.width * 0.8;
+    const height = app.screen.height * 0.8;
 
     // Center the container
     // Fractal will be generated in 0..size space
-    fractal.x = (app.screen.width - size) / 2;
-    fractal.y = (app.screen.height - size) / 2;
+    fractal.x = app.screen.width * 0.1;
+    fractal.y = app.screen.height * 0.1;
 
     // Create Generate button
     const generateBtn = document.createElement('button');
@@ -39,7 +40,7 @@ const app = new Application();
     generateBtn.style.zIndex = '100';
 
     generateBtn.onclick = () => {
-        fractal.generate(size, size);
+        fractal.generate(width, height);
         generateBtn.style.display = 'none';
         setTimeout(() => {
             resetBtn.style.display = 'block';
