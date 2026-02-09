@@ -15,3 +15,36 @@ export interface BlockMap {
     ll: IVector2D;
     lr: IVector2D;
 }
+
+export interface GridSection {
+    offset: IVector2D;
+    letter: CapitalLetters;
+}
+
+export type CapitalLetters =
+    | 'A'
+    | 'B'
+    | 'C'
+    | 'D'
+    | 'E'
+    | 'F'
+    | 'G'
+    | 'H'
+    | 'I'
+    | 'J'
+    | 'K'
+    | 'L'
+    | 'M'
+    | 'N'
+    | 'O'
+    | 'P'
+    | 'Q'
+    | 'R'
+    | 'S'
+    | 'T'
+    | 'U'
+    | 'V'
+    | 'W'
+    | 'X'
+    | 'Y'
+    | 'Z';
