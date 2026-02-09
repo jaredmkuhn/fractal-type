@@ -21,6 +21,10 @@ export class GridBuilder {
         return this.sections;
     }
 
+    public getCelSize(): { width: number; height: number } {
+        return { width: this.celWidth, height: this.celHeight };
+    }
+
     public recalculateGrid(width: number, height: number) {
         const letters = [...this.text] as CapitalLetters[];
         const colCount = Math.ceil(this.text.length / this.lines);
@@ -32,6 +36,9 @@ export class GridBuilder {
         for (let column = 0; column < colCount; column++) {
             for (let line = 0; line < this.lines; line++) {
                 const index = column * this.lines + line;
+                if (index >= letters.length) {
+                    break;
+                }
                 this.sections.push({
                     offset: {
                         x: column * this.celWidth,
