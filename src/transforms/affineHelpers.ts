@@ -1,5 +1,5 @@
-import { AffineTransform2D, BlockMap, IVector2D } from './interfaces';
-import { BASE_MAPS, type CapitalLetters } from './letterMaps';
+import { AffineTransform2D, BlockMap, IVector2D } from '../common/interfaces';
+import { BASE_MAPS, type CapitalLetters } from '../common/letterMaps';
 
 /**
  * Generates an array of affine transform maps for a given letter.

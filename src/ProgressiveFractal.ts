@@ -1,5 +1,5 @@
 import { Mesh, Geometry, Buffer, Ticker, BufferUsage } from 'pixi.js';
-import { generateLetter } from './common/affineHelpers';
+import { generateLetter } from './transforms/affineHelpers';
 import { FractalShader } from './FractalShader';
 import type { AffineTransform2D } from './common/interfaces';
 
@@ -14,7 +14,6 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
     private isGenerating = false;
 
     constructor() {
-        // Initialize buffer with zeros
         const points = new Float32Array(1_000_000 * 2); // 2 floats per point (x, y)
         const pointsBuffer = new Buffer({
             data: points,
@@ -39,7 +38,6 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
         this.points = points;
         this.pointsBuffer = pointsBuffer;
 
-        // Start in valid unit square position
         this.currentX = Math.random();
         this.currentY = Math.random();
 
@@ -51,17 +49,13 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
         this.currentPointIndex = 0;
         this.isGenerating = true;
 
-        // Scale transforms to the target size
         const rawMaps = generateLetter('H');
         if (rawMaps) {
             this.scaledMaps = this.scaleTransforms(rawMaps, width, height);
         }
 
-        // Reset to a random point within bounds
         this.currentX = Math.random() * width;
         this.currentY = Math.random() * height;
-
-        // Clear buffer by tracking index (new writes will overwrite)
     }
 
     public reset(): void {
@@ -100,7 +94,6 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
             const tIndex = Math.floor(Math.random() * maps.length);
             const transform = maps[tIndex];
 
-            // xt = x * transform.s.x + y * transform.r.y + transform.t.x
             const nextX = this.currentX * transform.s.x + this.currentY * transform.r.y + transform.t.x;
             const nextY = this.currentX * transform.r.x + this.currentY * transform.s.y + transform.t.y;
 
