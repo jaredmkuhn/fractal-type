@@ -18,7 +18,7 @@ export interface BlockMap {
 
 export interface GridSection {
     offset: IVector2D;
-    letter: CapitalLetters;
+    letter?: CapitalLetters;
 }
 
 export type CapitalLetters =

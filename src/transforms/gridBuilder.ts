@@ -33,18 +33,15 @@ export class GridBuilder {
         this.celWidth = width / colCount;
         this.celHeight = height / this.lines;
 
-        for (let column = 0; column < colCount; column++) {
-            for (let line = 0; line < this.lines; line++) {
-                const index = column * this.lines + line;
-                if (index >= letters.length) {
-                    break;
-                }
+        for (let line = 0; line < this.lines; line++) {
+            for (let column = 0; column < colCount; column++) {
+                const index = column + line * colCount;
                 this.sections.push({
                     offset: {
                         x: column * this.celWidth,
                         y: line * this.celHeight,
                     },
-                    letter: letters[index],
+                    letter: index >= letters.length ? undefined : letters[index],
                 });
             }
         }

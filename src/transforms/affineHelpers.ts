@@ -1,7 +1,38 @@
 import { AffineTransform2D, BlockMap, IVector2D, type CapitalLetters } from '../common/interfaces';
 import { BASE_MAPS } from '../common/letterMaps';
+import { GridBuilder } from './gridBuilder';
 
-/**
+export function buildAffinesForGrid(grid: GridBuilder): AffineTransform2D[] {
+    const affines = new Array<AffineTransform2D>();
+    const sections = grid.getSections();
+    const celSize = grid.getCelSize();
+
+    sections.forEach((section) => {
+        if (!section.letter) {
+            return;
+        }
+        const unitAffines = generateLetter(section.letter);
+        unitAffines.forEach((t) => {
+            affines.push({
+                s: {
+                    x: t.s.x,
+                    y: t.s.y,
+                },
+                r: {
+                    x: t.r.x * (celSize.height / celSize.width),
+                    y: t.r.y * (celSize.width / celSize.height),
+                },
+                t: {
+                    x: t.t.x * celSize.width + section.offset.x,
+                    y: t.t.y * celSize.height + section.offset.y,
+                },
+            });
+        });
+    });
+    return affines;
+}
+
+/**`
  * Generates an array of affine transform maps for a given letter.
  * @param letter The letter to generate the affine transform maps for.
  * @returns An array of affine transform maps.
