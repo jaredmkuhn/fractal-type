@@ -18,6 +18,7 @@ export interface BlockMap {
 
 export interface GridSection {
     offset: IVector2D;
+    celSize: IVector2D;
     letter?: CapitalLetters;
 }
 

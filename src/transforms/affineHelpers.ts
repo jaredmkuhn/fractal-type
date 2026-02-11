@@ -1,55 +1,58 @@
-import { AffineTransform2D, BlockMap, IVector2D, type CapitalLetters } from '../common/interfaces';
+import { AffineTransform2D, BlockMap, GridSection, IVector2D } from '../common/interfaces';
 import { BASE_MAPS } from '../common/letterMaps';
 import { GridBuilder } from './gridBuilder';
 
 export function buildAffinesForGrid(grid: GridBuilder): AffineTransform2D[] {
     const affines = new Array<AffineTransform2D>();
     const sections = grid.getSections();
-    const celSize = grid.getCelSize();
 
     sections.forEach((section) => {
         if (!section.letter) {
             return;
         }
-        const unitAffines = generateLetter(section.letter);
-        unitAffines.forEach((t) => {
-            affines.push({
-                s: {
-                    x: t.s.x,
-                    y: t.s.y,
-                },
-                r: {
-                    x: t.r.x * (celSize.height / celSize.width),
-                    y: t.r.y * (celSize.width / celSize.height),
-                },
-                t: {
-                    x: t.t.x * celSize.width + section.offset.x,
-                    y: t.t.y * celSize.height + section.offset.y,
-                },
-            });
-        });
+        affines.push(...generateLetterForGrid(section));
     });
     return affines;
 }
 
-/**`
- * Generates an array of affine transform maps for a given letter.
- * @param letter The letter to generate the affine transform maps for.
- * @returns An array of affine transform maps.
- * @throws {Error} if the letter is not found in the base maps.
+/**
+ * Generates the affine transforms for a given letter mapped to a grid in
+ * a unit-square format
+ * @param section
+ * @returns an array of affine transforms mapped to the grid location
  */
-export function generateLetter(letter: CapitalLetters): AffineTransform2D[] {
-    const baseMap = BASE_MAPS[letter];
+export function generateLetterForGrid(section: GridSection): AffineTransform2D[] {
+    if (!section.letter) {
+        return [];
+    }
+    const baseMap = BASE_MAPS[section.letter];
     if (!baseMap) {
-        throw new Error(`Unknown letter: ${letter}`);
+        throw new Error(`Unknown letter: ${section.letter}`);
     }
     const affines = new Array<AffineTransform2D>();
-
     baseMap.forEach((base) => {
-        affines.push(buildAffineMap(base));
+        const rebase: BlockMap = rebaseBlockMap(base, section);
+        affines.push(buildAffineMap(rebase));
     });
-
     return affines;
+}
+
+/**
+ * Rebases a block map to a grid section in a unit-square format.
+ * @param blockMap The block map to rebase.
+ * @param section The grid section to rebase to.
+ * @returns The rebased block map.
+ */
+function rebaseBlockMap(blockMap: BlockMap, section: GridSection): BlockMap {
+    const rebaseMap: BlockMap = structuredClone(blockMap);
+    Object.keys(blockMap).forEach((key) => {
+        const k = key as keyof BlockMap;
+        rebaseMap[k] = {
+            x: blockMap[k].x * section.celSize.x + section.offset.x,
+            y: blockMap[k].y * section.celSize.y + section.offset.y,
+        };
+    });
+    return rebaseMap;
 }
 
 /**
@@ -61,7 +64,7 @@ export function generateLetter(letter: CapitalLetters): AffineTransform2D[] {
  * @throws {Error} if the block map is invalid (computed lower-right does not match
  *  the provided lower-right)
  */
-function buildAffineMap(map: BlockMap): AffineTransform2D {
+export function buildAffineMap(map: BlockMap): AffineTransform2D {
     const t: IVector2D = { x: map.ul.x, y: map.ul.y };
     const s: IVector2D = { x: map.ur.x - t.x, y: map.ll.y - t.y };
     const r: IVector2D = { x: map.ur.y - t.y, y: map.ll.x - t.x };

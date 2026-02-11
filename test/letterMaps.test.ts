@@ -1,6 +1,6 @@
 import { BASE_MAPS } from '../src/common/letterMaps';
 import { type CapitalLetters } from '../src/common/interfaces';
-import { generateLetter } from '../src/transforms/affineHelpers';
+import { generateLetter } from './utils/letterHelper';
 
 describe('BASE_MAPS Existence', () => {
     test('contains at least 3 AffineTransform2D entries in total', () => {

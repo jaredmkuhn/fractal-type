@@ -1,7 +1,8 @@
 import { Mesh, Geometry, Buffer, Ticker, BufferUsage } from 'pixi.js';
-import { generateLetter } from './transforms/affineHelpers';
+import { buildAffinesForGrid } from './transforms/affineHelpers';
 import { FractalShader } from './FractalShader';
 import type { AffineTransform2D } from './common/interfaces';
+import { GridBuilder } from './transforms/gridBuilder';
 
 export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
     private readonly MAX_POINTS = 1_000_000;
@@ -49,7 +50,9 @@ export class ProgressiveFractal extends Mesh<Geometry, FractalShader> {
         this.currentPointIndex = 0;
         this.isGenerating = true;
 
-        const rawMaps = generateLetter('H');
+        const grid = new GridBuilder('HEEH', 2);
+
+        const rawMaps = buildAffinesForGrid(grid);
         if (rawMaps) {
             this.scaledMaps = this.scaleTransforms(rawMaps, width, height);
         }
