@@ -56,20 +56,27 @@ npm test
 ```
 fractal-type/
 ├── src/
-│   ├── common/         # Common utilities and interfaces
-│   │   ├── affineHelpers.ts
+│   ├── common/             # Shared utilities and interfaces
 │   │   ├── interfaces.ts
 │   │   └── letterMaps.ts
-│   ├── FractalShader.ts  # Custom shader for fractal rendering
+│   ├── controls/           # UI controls (buttons, inputs)
+│   │   └── buttonFactory.ts
+│   ├── transforms/         # Transformation logic
+│   │   ├── affineHelpers.ts
+│   │   └── gridBuilder.ts
+│   ├── FractalShader.ts    # Custom shader for fractal rendering
 │   ├── ProgressiveFractal.ts # Main fractal generation logic
-│   ├── App.tsx           # Main application component
-│   └── main.ts           # Entry point
-├── test/               # Unit tests
-├── index.html          # HTML entry point
-├── package.json        # Project dependencies
-└── vite.config.ts      # Vite configuration
+│   ├── main.ts             # Application entry point
+│   └── style.css           # Global styles
+├── test/                   # Unit tests
+│   ├── utils/              # Test utilities
+│   ├── affineHelpers.test.ts
+│   └── letterMaps.test.ts
+├── index.html              # HTML entry point
+├── package.json            # Project dependencies
+└── vite.config.ts          # Vite configuration
 ```
 
 ## License
 
-This project is licensed under GPLv3 (see LICENSE file or https://www.gnu.org/licenses/gpl-3.0.en.html).
+This project is licensed under GPLv3 (see LICENSE file or [https://www.gnu.org/licenses/gpl-3.0.en.html](https://www.gnu.org/licenses/gpl-3.0.en.html)).
